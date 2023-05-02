@@ -58,12 +58,12 @@ var usuarioRegistrados = [
                 ]
             }    
         ],
-        pendiente:
+        pendiente:[
             {
                 empresa: "Hugo",
                 direccion: "Tegucigalpa, Cerro Grande",
                 distancia: "20km",
-                mapa: "img/mapa.png",
+                mapa: {lat:14.169889 ,lng: -87.308289},
                 color: "#8317CD",
                 precio: 400,
                 envios: [
@@ -76,49 +76,41 @@ var usuarioRegistrados = [
                         descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
                     }
                 ]
-            }
-         
-    },{
-        name: "Alejandro Avila", 
-        email: "alejandro.2000@gamil.com",
-        password: "23",
-        phoneNumber: "1234099987",
-        entregas: [
+            }],
+            historial:[
             {
-                empresa: "Bigos",
+                empresa: "Hugo",
                 direccion: "Tegucigalpa, Cerro Grande",
-                distancia: "12km",
-                color: "#E88B00",
-                mapa : "img/mapa.png",
+                distancia: "20km",
+                mapa: {lat:14.169889 ,lng: -87.308289},
+                color: "#8317CD",
                 precio: 400,
                 envios: [
+                    {
+                        nombreProducto: "Producto 1",
+                        descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
+                    },
                     {
                         nombreProducto: "Producto 2",
                         descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
                     }
                 ]
-            }
-            ,
+            },
             {
-                empresa: "Bigos",
-                direccion: "Tegucigalpa, Cerro Grande",
-                distancia: "12km",
-                color: "#E88B00",
-                mapa : "img/mapa.png",
+                empresa: "La curacao",
+                direccion: "Tegucigalpa",
+                distancia: "20km",
+                mapa: {lat:14.169889 ,lng: -87.308289},
+                color: "#9317CD",
                 precio: 400,
                 envios: [
                     {
-                        nombreProducto: "Producto 2",
+                        nombreProducto: "Producto 1",
                         descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
                     }
                 ]
             }
-        ],
-        pendiente:
-            {
-                
-            }
-        
+        ] ,       
     }
 ];
 

@@ -1,23 +1,93 @@
-var pendiente = [
-    {
-        empresa: "Hugo",
-        direccion: "Tegucigalpa, Cerro Grande",
-        distancia: "20km",
-        mapa: "img/mapa.png",
-        color: "#8317CD",
-        precio: 400,
-        envios: [
-            {
-                nombreProducto: "Producto 1",
-                descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
-            },
-            {
-                nombreProducto: "Producto 2",
-                descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
-            }
-        ]
+var usuarioRegistrados = JSON.parse(localStorage.getItem('usuarioRegistrados'));
+
+let pendiente = usuarioRegistrados[0].pendiente[0];
+
+function mostrarPedio() {
+
+    let productos = "";
+
+    for(let i=0; i<pendiente.envios.length;  i++){
+        productos  += `<h4>${pendiente.envios[i].nombreProducto}<h4>
+                       <p>${pendiente.envios[i].descripcion}</p>`;
     }
-];
+
+    document.getElementById("pedientes").innerHTML = `<h1>Delivery in process</h1>
+                                                      <h3>Coordenadas: ${pendiente.direccion}<h3>
+                                                      <div id="map" style="width: 300px; margin:auto;" class="imagen-mapa"></div>
+                                                      <p>Distancia: ${pendiente.distancia}</p>
+                                                      <p>${productos}</p>
+                                                      <button class="entregado">Delivered</button>
+                                                      `;
+                                                      console.log(pendiente.mapa)
+                                                      iniciarMap(pendiente.mapa);
+}
+
+mostrarPedio();
+
+// para el mapa
+function iniciarMap(ubiccacion2){
+    var coord = {lat:14.104953 ,lng: -87.233900};
+    var coord2 = ubiccacion2;
+
+    let map = new google.maps.Map(document.getElementById('map'),{
+      zoom: 10,
+      center: coord
+    });
+
+    var marker = new google.maps.Marker({
+      position: coord,
+      map: map
+    });
+
+    var marker2 = new google.maps.Marker({
+      position: coord2,
+      map: map
+    });
+
+    var directionsService = new google.maps.DirectionsService();
+    var directionsRenderer = new google.maps.DirectionsRenderer();
+
+    var request = {
+      origin: { lat:14.104953 ,lng: -87.233900 },
+      destination: coord2,
+      travelMode: google.maps.TravelMode.DRIVING,
+    };
+
+    directionsService.route(request, function (result, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        directionsRenderer.setDirections(result);
+      }
+    });
+
+    directionsRenderer.setMap(map);
+}
+
+
+
+
+
+
+
+// var pendiente = [
+//     {
+//         empresa: "Hugo",
+//         direccion: "Tegucigalpa, Cerro Grande",
+//         distancia: "20km",
+//         mapa: "img/mapa.png",
+//         color: "#8317CD",
+//         precio: 400,
+//         envios: [
+//             {
+//                 nombreProducto: "Producto 1",
+//                 descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
+//             },
+//             {
+//                 nombreProducto: "Producto 2",
+//                 descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
+//             }
+//         ]
+//     }
+// ];
 
 // toggleMenuElement.addEventListener('click', ()=>{
 //     mainMenuElement.classList.toggle('mostrar-menu');
@@ -34,25 +104,6 @@ var pendiente = [
 // }
 
 
-function mostrarPedios() {
-
-    let productos = "";
-
-    for(let i=0; i<pendiente.length;  i++){
-        productos  += `<h4>${pendiente[i].nombreProducto}<h4>
-                       <p>${pendiente[i].descripcion}</p>`;
-    }
-
-    document.getElementById("pedientes").innerHTML = `<h1>delivery in process</h1>
-                                                      <h3>Coordenadas: ${pendiente[0].direccion}<h3>
-                                                      <img src="${pendiente[0].mapa}" class="imagen-mapa">
-                                                      <p>Distancia: ${pendiente[0].distancia}</p>
-                                                      <p>${productos}</p>
-                                                      <button class="entregado">Delivered</button>`;
-    
-}
-
-mostrarPedios();
 
 // function mostrarEntrega(){
 //     pendientes.forEach(function (envio, i){
