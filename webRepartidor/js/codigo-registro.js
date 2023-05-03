@@ -10,116 +10,6 @@ var localStorage = window.localStorage;
 const form = document.getElementById("form");
 const parrafo = document.getElementById("warninigs");
 
-var usuarioRegistrados = [
-    {
-        name: "Daniel Avila", 
-        email: "daniel.avila.a.v.2000@gmail.com",
-        password: "12",
-        phoneNumber: "123456789",
-        entregas: [
-            {
-                empresa: "Hugo",
-                direccion: "Tegucigalpa, Cerro Grande",
-                distancia: "20km",
-                color: "#8317CD",
-                mapa : {lat:14.169889 ,lng: -87.308289},
-                precio: 400,
-                envios: [
-                    {
-                        nombreProducto: "Producto 1",
-                        descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
-                    },
-                    {
-                        nombreProducto: "Producto 2",
-                        descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
-                    }
-                ]
-            },
-            {
-                empresa: "Walmart",
-                direccion: "Tegucigalpa, Cerro Grande",
-                distancia: "10km",
-                color: "#005CB5",
-                mapa : {lat:14.075599 ,lng: -87.200554},
-                precio: 400,
-                envios: [
-                    {
-                        nombreProducto: "Producto 1",
-                        descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
-                    },
-                    {
-                        nombreProducto: "Producto 2",
-                        descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
-                    },
-                    {
-                        nombreProducto: "Producto 3",
-                        descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
-                    }
-                ]
-            }    
-        ],
-        pendiente:[
-            {
-                empresa: "Hugo",
-                direccion: "Tegucigalpa, Cerro Grande",
-                distancia: "20km",
-                mapa: {lat:14.169889 ,lng: -87.308289},
-                color: "#8317CD",
-                precio: 400,
-                envios: [
-                    {
-                        nombreProducto: "Producto 1",
-                        descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
-                    },
-                    {
-                        nombreProducto: "Producto 2",
-                        descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
-                    }
-                ]
-            }],
-            historial:[
-            {
-                empresa: "Hugo",
-                direccion: "Tegucigalpa, Cerro Grande",
-                distancia: "20km",
-                mapa: {lat:14.169889 ,lng: -87.308289},
-                color: "#8317CD",
-                precio: 400,
-                envios: [
-                    {
-                        nombreProducto: "Producto 1",
-                        descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
-                    },
-                    {
-                        nombreProducto: "Producto 2",
-                        descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
-                    }
-                ]
-            },
-            {
-                empresa: "La curacao",
-                direccion: "Tegucigalpa",
-                distancia: "20km",
-                mapa: {lat:14.169889 ,lng: -87.308289},
-                color: "#9317CD",
-                precio: 400,
-                envios: [
-                    {
-                        nombreProducto: "Producto 1",
-                        descripcion: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
-                    }
-                ]
-            }
-        ] ,       
-    }
-];
-
-if (localStorage.getItem('usuarioRegistrados') == null) {
-    localStorage.setItem('usuarioRegistrados', JSON.stringify(usuarioRegistrados)); //de JSON a cadena
-}else{
-    usuarioRegistrados = JSON.parse(localStorage.getItem('usuarioRegistrados'));
-}
-
 form.addEventListener("submit", e=>{
     e.preventDefault();
     let warninigs  = "";
@@ -167,18 +57,33 @@ form.addEventListener("submit", e=>{
     if(entrar==true){
         parrafo.innerHTML = warninigs;
     }else{
-        enviado.innerHTML = `<p>Enviado</p>`;
-        enviado.style.display = "block";
 
-        let usuario = {
+        let repartidor = {
             email: email.value,
             name:  nombre.value,
             password: password.value,
             phoneNumber: phoneNumber.value
         }
-    
-        usuarioRegistrados.push(usuario)
-        localStorage.setItem('usuarioRegistrados', JSON.stringify(usuarioRegistrados));
+
+
+        fetch('http://localhost:3002/repartidores', {
+        method: 'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(repartidor)
+        })
+        .then((respuesta) => respuesta.json())
+        .then((datos) => {
+            console.log(datos)
+            enviado.innerHTML = `<p>Enviado</p>`;
+            enviado.style.display = "block";    
+        })
+        .catch(error =>{
+            console.log('error al guardar'); 
+            enviado.innerHTML = `<p>Error al enviar</p><br>
+                                <p>Intente con otro correo</p>`;
+            enviado.style.display = "block";
+            enviado.style.background = "#FA0000";
+        })
         
     }
 

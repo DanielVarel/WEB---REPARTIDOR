@@ -2,21 +2,24 @@ var usuarioRegistrados = JSON.parse(localStorage.getItem('usuarioRegistrados'));
 
 let pendiente = usuarioRegistrados[0].pendiente[0];
 
+
 function mostrarPedio() {
 
     let productos = "";
+    
+        for(let i=0; i<pendiente.envios.length;  i++){
+          productos  += `<h4>${pendiente.envios[i].nombreProducto}<h4>
+                        <p>${pendiente.envios[i].descripcion}</p>`;
+      }
+    
 
-    for(let i=0; i<pendiente.envios.length;  i++){
-        productos  += `<h4>${pendiente.envios[i].nombreProducto}<h4>
-                       <p>${pendiente.envios[i].descripcion}</p>`;
-    }
-
+   
     document.getElementById("pedientes").innerHTML = `<h1>Delivery in process</h1>
                                                       <h3>Coordenadas: ${pendiente.direccion}<h3>
                                                       <div id="map" style="width: 300px; margin:auto;" class="imagen-mapa"></div>
                                                       <p>Distancia: ${pendiente.distancia}</p>
                                                       <p>${productos}</p>
-                                                      <button class="entregado">Delivered</button>
+                                                      <button class="entregado" onclick="pedidoEntregado()">Delivered</button>
                                                       `;
                                                       console.log(pendiente.mapa)
                                                       iniciarMap(pendiente.mapa);
@@ -62,7 +65,25 @@ function iniciarMap(ubiccacion2){
     directionsRenderer.setMap(map);
 }
 
+function pedidoEntregado(){
 
+  let idOrden = pendiente._id;
+
+  const a = {
+    status: 2
+  }
+
+  fetch(`http://localhost:3002/ordenes/${idOrden}`, {
+        method: 'PUT',
+        headers: {"Content-Type": "application/json"},//j
+        body: JSON.stringify(a)
+      })
+    .then((respuesta) => respuesta.json())
+    .then((datos) => {
+        console.log('Se guardo correctamente', datos); 
+    })
+    .catch(error => console.log(error)); 
+}
 
 
 

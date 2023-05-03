@@ -1,0 +1,12 @@
+[{
+        "name": "Yolanda Avila", 
+        "email": "yolanda.avila.a.v.2000@gmail.com",
+        "password": "12",
+        "phoneNumber": "123456789",
+        "authenticated": true,
+        "pendiente":[
+        ],
+        "historial":[
+        ]        
+    }
+]

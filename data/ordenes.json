@@ -1,0 +1,71 @@
+[
+    {
+        "empresa": "Walmart",
+        "direccion": "Tegucigalpa, Cerro Grande",
+        "distancia": "10km",
+        "color": "#005CB5",
+        "status": 0,
+        "mapa ": {"lat":14.075599 ,"lng": -87.200554},
+        "precio": 400,
+        "envios": [
+            {
+                "nombreProducto": "Producto 1",
+                "descripcion": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
+            },
+            {
+                "nombreProducto": "Producto 2",
+                "descripcion": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
+            },
+            {
+                "nombreProducto": "Producto 3",
+                "descripcion": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
+            }
+        ]
+    },{
+        "empresa": "Walmart",
+        "direccion": "Tegucigalpa, Cerro Grande",
+        "distancia": "10km",
+        "color": "#005CB5",
+        "estatus": 1,
+        "mapa ": {"lat":14.075599 ,"lng": -87.200554},
+        "precio": 400,
+        "envios": [
+            {
+                "nombreProducto": "Producto 1",
+                "descripcion": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
+            },
+            {
+                "nombreProducto": "Producto 2",
+                "descripcion": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
+            },
+            {
+                "nombreProducto": "Producto 3",
+                "descripcion": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
+            }
+        ]
+    },{
+        "empresa": "Walmart",
+        "direccion": "Tegucigalpa, Cerro Grande",
+        "distancia": "10km",
+        "color": "#005CB5",
+        "estatus": 2,
+        "mapa ": {"lat":14.075599 ,"lng": -87.200554},
+        "precio": 400,
+        "envios": [
+            {
+                "nombreProducto": "Producto 1",
+                "descripcion": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
+            },
+            {
+                "nombreProducto": "Producto 2",
+                "descripcion": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
+            },
+            {
+                "nombreProducto": "Producto 3",
+                "descripcion": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, modi!"
+            }
+        ]
+    }
+
+
+]

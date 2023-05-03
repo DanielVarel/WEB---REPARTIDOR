@@ -5,49 +5,47 @@ const boton = document.getElementById("boton");
 const form = document.getElementById("form");
 const parrafo = document.getElementById("warninigs");
 
-// var usuarioRegistrados = [];
-
-// const usuarioRegistrados = [
-//     {
-//         name: "Daniel Avila", 
-//         email: "daniel.avila.a.v.2000@gmail.com",
-//         password: "12",
-//         phoneNumber: "123456789"
-//     }
-// ];
-
-// if (localStorage.getItem('usuarioRegistrados') == null) {
-//     localStorage.setItem('usuarioRegistrados', JSON.stringify(usuarioRegistrados)); //de JSON a cadena
-// }else{
-//     usuarioRegistrados = JSON.parse(localStorage.getItem('usuarioRegistrados'));
-// }
-
-usuarioRegistrados = JSON.parse(localStorage.getItem('usuarioRegistrados'));
-
-console.log(usuarioRegistrados);
-
 form.addEventListener("submit", e=>{
     e.preventDefault();
     let encontrado = true;
 
     parrafo.innerHTML = "";
 
-    for(let i=0; i<usuarioRegistrados.length; i++){
-        if(email.value != usuarioRegistrados[i].email){
-            encontrado = false;
-        }
-        else if(password.value != usuarioRegistrados[i].password){
-            encontrado = false;
-        }
-        else if(password.value == usuarioRegistrados[i].password && email.value == usuarioRegistrados[i].email){
-            encontrado = true;
-            console.log("es correcto",encontrado)
-            boton =  location.href = "index3.html";
-        }
-    }
+    let email = document.getElementById('email').value;
+    let password = document.getElementById('password').value;
 
-    if(encontrado == false){
-        parrafo.innerHTML = `The mail is not valid <br>
-                            or the password is wrong`;
-    }
+    fetch(`http://localhost:3002/repartidores?email=${email}&password=${password}`, {
+        method: 'get',
+        headers: {"Content-Type": "application/json"},
+      })
+    .then((respuesta) => respuesta.json())
+    .then((datos) => {
+        console.log(datos);
+        if(datos.length !== 0){
+            window.location.href = "/webRepartidor/index3.html";
+            localStorage.setItem('usuarioRegistrados', JSON.stringify(datos));
+        }else{
+            parrafo.innerHTML = `The mail is not valid <br>
+                                or the password is wrong`;
+        }
+    })
+    .catch(error => {
+            
+    });     
 });
+
+
+
+  // for(let i=0; i<usuarioRegistrados.length; i++){
+    //     if(email.value != usuarioRegistrados[i].email){
+    //         encontrado = false;
+    //     }
+    //     else if(password.value != usuarioRegistrados[i].password){
+    //         encontrado = false;
+    //     }
+    //     else if(password.value == usuarioRegistrados[i].password && email.value == usuarioRegistrados[i].email){
+    //         encontrado = true;
+    //         console.log("es correcto",encontrado)
+    //         boton =  location.href = "index3.html";
+    //     }
+    // }

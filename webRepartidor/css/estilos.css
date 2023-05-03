@@ -125,4 +125,8 @@ button {
     padding: 20px;
     background-color: #5ec755;
     border-radius: 30px;
+    z-index: 3;
+    color: #000;
+    font-weight: 700;
+    font-size: 20px;
 }
