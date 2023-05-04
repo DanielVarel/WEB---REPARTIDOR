@@ -52,7 +52,7 @@ function mostrarEntrega(){
 function detallesEnvio(i) {
     console.log("Numero de pedido", i);
 
-    let detallesActuales = entregas[0];
+    let detallesActuales = entregas[i];
 
     console.log(detallesActuales)
 
@@ -60,7 +60,7 @@ function detallesEnvio(i) {
     
     for(let x=0; x<detallesActuales.envios.length; x++){
         productos += `<h4>${detallesActuales.envios[x].nombreProducto}<h4>
-                    <p>${detallesActuales.envios[x].descripcion}</p>`;
+                      <p>${detallesActuales.envios[x].descripcion}</p>`;
     }
 
     document.getElementById("aja").innerHTML = `<h3>details...</h3>
@@ -75,13 +75,14 @@ function detallesEnvio(i) {
                                                                   <div class="cerrar-modal">
                                                                      <button class="entregado" onclick="aceptarEnvio(${i})">Confirm</button>
                                                                   </div>`;
-                                                                  iniciarMap(detallesActuales.mapa);
+                                                                  iniciarMap(detallesActuales.mapa[0]);
 }
 
 //'${detallesActuales._id}', '${detallesActuales.envios}', '${detallesActuales.empresa}', '${detallesActuales.distancia}', '${detallesActuales.descripcion}', '${detallesActuales.mapa}'
 
 // para el mapa
 function iniciarMap(ubiccacion2){
+    console.log(ubiccacion2)
     var coord = {lat:14.104953 ,lng: -87.233900};
     var coord2 = ubiccacion2;
 
@@ -146,6 +147,7 @@ function aceptarEnvio(id){
       mapa: entregas[id].mapa,
       precio: entregas[id].precio,
       envios: entregas[id].envios,
+      color: entregas[id].color
   }
 
   const a = {
@@ -174,8 +176,25 @@ function aceptarEnvio(id){
             console.log('Se guardo correctamente', datos);
             cerrarModal();
             obtenerOrdenes();
+            recargarReparrtidor();
         })
         .catch(error => console.log(error));  
     })
     .catch(error => console.log(error));      
+}
+
+function recargarReparrtidor(){
+  fetch(`http://localhost:3002/repartidores?email=${repartidor.email}&password=${repartidor.password}`, {
+        method: 'get',
+        headers: {"Content-Type": "application/json"},
+      })
+    .then((respuesta) => respuesta.json())
+    .then((datos) => {
+        console.log(datos);
+        localStorage.setItem('usuarioRegistrados', JSON.stringify(datos));
+        
+    })
+    .catch(error => {
+            console.log(error)
+    });  
 }

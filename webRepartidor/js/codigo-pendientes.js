@@ -2,8 +2,9 @@ var usuarioRegistrados = JSON.parse(localStorage.getItem('usuarioRegistrados'));
 
 let pendiente = usuarioRegistrados[0].pendiente[0];
 
+console.log(usuarioRegistrados[0]._id)
 
-function mostrarPedio() {
+function mostrarPedio(pendiente) {
 
     let productos = "";
     
@@ -21,16 +22,15 @@ function mostrarPedio() {
                                                       <p>${productos}</p>
                                                       <button class="entregado" onclick="pedidoEntregado()">Delivered</button>
                                                       `;
-                                                      console.log(pendiente.mapa)
-                                                      iniciarMap(pendiente.mapa);
 }
 
-mostrarPedio();
+mostrarPedio(pendiente);
+var coord2 = pendiente.mapa[0];
 
 // para el mapa
 function iniciarMap(ubiccacion2){
     var coord = {lat:14.104953 ,lng: -87.233900};
-    var coord2 = ubiccacion2;
+   
 
     let map = new google.maps.Map(document.getElementById('map'),{
       zoom: 10,
@@ -67,6 +67,18 @@ function iniciarMap(ubiccacion2){
 
 function pedidoEntregado(){
 
+  const u = {
+      _id: pendiente._id,
+      empresa: pendiente.empresa,
+      direccion: pendiente.direccion,
+      distancia: pendiente.distancia,
+      status: 2,
+      mapa: pendiente.mapa[0],
+      precio: pendiente.precio,
+      envios: pendiente.envios,
+      color: pendiente.color
+  }
+
   let idOrden = pendiente._id;
 
   const a = {
@@ -80,13 +92,48 @@ function pedidoEntregado(){
       })
     .then((respuesta) => respuesta.json())
     .then((datos) => {
-        console.log('Se guardo correctamente', datos); 
+        console.log('Se guardo correctamente', datos);
+        fetch(`http://localhost:3002/repartidores/${usuarioRegistrados[0]._id}/cambiar`, {
+        method: 'PUT',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(u)
+        })
+        .then((respuesta) => respuesta.json())
+        .then((datos) => {
+            console.log('Se guardo correctamente', datos);
+            fetch(`http://localhost:3002/repartidores/${usuarioRegistrados[0]._id}/eliminar`, {
+              method: 'PUT',
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify(u)
+              })
+              .then((respuesta) => respuesta.json())
+              .then((datos) => {
+                  console.log('Se elimino correctamente', datos);
+                  recargarReparrtidor();
+              })
+              .catch(error => console.log(error));
+             })
+        .catch(error => console.log(error));   
     })
     .catch(error => console.log(error)); 
 }
 
 
-
+function recargarReparrtidor(){
+  fetch(`http://localhost:3002/repartidores?email=${usuarioRegistrados[0].email}&password=${usuarioRegistrados[0].password}`, {
+        method: 'get',
+        headers: {"Content-Type": "application/json"},
+      })
+    .then((respuesta) => respuesta.json())
+    .then((datos) => {
+        console.log(datos);
+        localStorage.setItem('usuarioRegistrados', JSON.stringify(datos));
+        location.reload(true);
+    })
+    .catch(error => {
+            console.log(error)
+    });  
+}
 
 
 // var pendiente = [
