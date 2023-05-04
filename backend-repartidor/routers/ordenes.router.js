@@ -16,9 +16,11 @@ router.get('/', function(req, res){
 // cuando un repartidor acepta la orden
 router.put('/:_id', function(req, res){
 
-    const {status} = req.body;
+    const {status, idRepartidor, nombreRepartidor} = req.body;
 
-    ordenes.updateOne({_id: req.params._id}, {$set: {status: status}}).then(result=>{
+    console.log(status, 'dddd', idRepartidor, 'llll', nombreRepartidor)
+
+    ordenes.updateOne({_id: req.params._id}, {$set: {status: status, idRepartidor: idRepartidor, nombreRepartidor: nombreRepartidor}}).then(result=>{
         res.send(result);
         res.end()
     }).catch(error=>{

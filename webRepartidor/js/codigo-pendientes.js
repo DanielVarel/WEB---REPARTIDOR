@@ -76,13 +76,19 @@ function pedidoEntregado(){
       mapa: pendiente.mapa[0],
       precio: pendiente.precio,
       envios: pendiente.envios,
-      color: pendiente.color
+      color: pendiente.color,
+      idRepartidor: usuarioRegistrados[0]._id,
+      nombreRepartidor: usuarioRegistrados[0].name,
+      idCliente: pendiente.idCliente,
+      nombreCliente: pendiente.nombreCliente,
   }
 
   let idOrden = pendiente._id;
 
   const a = {
-    status: 2
+    status: 2,
+    nombreRepartidor: usuarioRegistrados[0].name,
+    idRepartidor: usuarioRegistrados[0]._id 
   }
 
   fetch(`http://localhost:3002/ordenes/${idOrden}`, {

@@ -147,16 +147,22 @@ function aceptarEnvio(id){
       mapa: entregas[id].mapa,
       precio: entregas[id].precio,
       envios: entregas[id].envios,
-      color: entregas[id].color
+      color: entregas[id].color,
+      idRepartidor: repartidor._id,
+      nombreRepartidor: repartidor.name,
+      idCliente: entregas[id].idCliente,
+      nombreCliente: entregas[id].nombreCliente,
   }
 
   const a = {
-    status: 1
+    status: 1,
+    nombreRepartidor: repartidor.name,
+    idRepartidor: repartidor._id 
   }
 
   let idOrden = entregas[id]._id;
 
-  console.log(idOrden)
+  console.log(idOrden, repartidor._id, repartidor.name)
 
     fetch(`http://localhost:3002/ordenes/${idOrden}`, {
         method: 'PUT',
