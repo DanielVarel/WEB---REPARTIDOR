@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var repartidores = require('../models/repartidores');
 
-// obtener a todos los repartidores
+// para autenticar un usuario al momento de inicar sesion
 router.get('/', function(req, res){
     const email= req.query.email;
     const password= req.query.password;

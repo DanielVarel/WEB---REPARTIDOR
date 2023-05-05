@@ -14,7 +14,7 @@ form.addEventListener("submit", e=>{
     let email = document.getElementById('email').value;
     let password = document.getElementById('password').value;
 
-    fetch(`http://localhost:3002/repartidores?email=${email}&password=${password}`, {
+    fetch(`http://localhost:3000/dealers?email=${email}&password=${password}`, {
         method: 'get',
         headers: {"Content-Type": "application/json"},
       })
@@ -33,19 +33,3 @@ form.addEventListener("submit", e=>{
             console.log(error)
     });     
 });
-
-
-
-  // for(let i=0; i<usuarioRegistrados.length; i++){
-    //     if(email.value != usuarioRegistrados[i].email){
-    //         encontrado = false;
-    //     }
-    //     else if(password.value != usuarioRegistrados[i].password){
-    //         encontrado = false;
-    //     }
-    //     else if(password.value == usuarioRegistrados[i].password && email.value == usuarioRegistrados[i].email){
-    //         encontrado = true;
-    //         console.log("es correcto",encontrado)
-    //         boton =  location.href = "index3.html";
-    //     }
-    // }

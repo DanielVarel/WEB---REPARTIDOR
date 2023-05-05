@@ -4,6 +4,8 @@ var infoodal = document.getElementById("modal");
 
 var aux = JSON.parse(localStorage.getItem('usuarioRegistrados'));
 
+var colores = ["#2A7FF9", "#2AC4F9", "#782AF9", "#CA5FFC", "#F0FC5F", "#FC7E5F", "#A9FF91", "#91FFBC"]
+
 var repartidor = aux[0];
 
 var entregas = []
@@ -11,7 +13,7 @@ var entregas = []
 var repartidorActual = 0;
 
 function obtenerOrdenes(){
-  fetch(`http://localhost:3002/ordenes`, {
+  fetch(`http://localhost:3000/client/order`, {
     method: 'GET',
     headers: {
       "Content-Type": "application/json",
@@ -20,8 +22,8 @@ function obtenerOrdenes(){
   .then((respuesta) => respuesta.json())
   .then(async (ordenes) => {
     entregas = ordenes;
-    mostrarEntrega();
     console.log(entregas);
+    mostrarEntrega();
   }); 
 }
 
@@ -31,10 +33,10 @@ function mostrarEntrega(){
   document.getElementById("lista").innerHTML = ``;
 
     for(let i=0; i<entregas.length; i++){
-            document.getElementById("lista").innerHTML += `<div class="contenedor abrir-modal" onclick="abrirModal();detallesEnvio(${i})"  style="background-color: ${entregas[i].color}">
-                                                                <h2 class="empresa">${entregas[i].empresa}</h2>
-                                                                <p class="direccion">Distancia: ${entregas[i].distancia}</p>
-                                                                <p class="cantidad-envios">Cantidad de productos: ${entregas[i].envios.length}</p>
+            document.getElementById("lista").innerHTML += `<div class="contenedor abrir-modal" onclick="abrirModal();detallesEnvio(${i})"  style="background-color: ${colores[i]}">
+                                                                <h2 class="empresa">${i+1}</h2>
+                                                                <p class="direccion">revenue: ${entregas[i].service}</p>
+                                                                <p class="cantidad-envios">Cantidad de productos: ${entregas[i].products.length}</p>
                                                             </div>`;    
     }
 
@@ -58,14 +60,14 @@ function detallesEnvio(i) {
 
     let productos="";
     
-    for(let x=0; x<detallesActuales.envios.length; x++){
-        productos += `<h4>${detallesActuales.envios[x].nombreProducto}<h4>
-                      <p>${detallesActuales.envios[x].descripcion}</p>`;
+    for(let x=0; x<detallesActuales.products.length; x++){
+        productos += `<h4>${detallesActuales.products[x].name}<h4>
+                      <p>${detallesActuales.products[x].descripcion}</p>`;
     }
 
     document.getElementById("aja").innerHTML = `<h3>details...</h3>
-                                                                  <h3>${detallesActuales.empresa}</h3>
-                                                                  <p>${detallesActuales.distancia}</p>
+                                                                  <h3>${detallesActuales.date}</h3>
+                                                                  <p>${detallesActuales.client.name}</p>
                                                                   <div id="map" class="imagen-mapa"></div>
                                                                   
                                                                   <p>${productos}</p>
@@ -75,14 +77,27 @@ function detallesEnvio(i) {
                                                                   <div class="cerrar-modal">
                                                                      <button class="entregado" onclick="aceptarEnvio(${i})">Confirm</button>
                                                                   </div>`;
-                                                                  iniciarMap(detallesActuales.mapa[0]);
+                                                                  iniciarMap(detallesActuales.locations[0]);
 }
 
 //'${detallesActuales._id}', '${detallesActuales.envios}', '${detallesActuales.empresa}', '${detallesActuales.distancia}', '${detallesActuales.descripcion}', '${detallesActuales.mapa}'
 
 // para el mapa
 function iniciarMap(ubiccacion2){
-    console.log(ubiccacion2)
+    let latitud, longitud;
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      latitud = position.coords.latitude;
+      longitud = position.coords.longitude;
+      console.log(`Latitud: ${latitud}, Longitud: ${longitud}`);
+    }, (error) => {
+      console.error(`Error al obtener la ubicación: ${error.message}`);
+    });
+  } else {
+    console.error('Geolocalización no soportada en este navegador');
+  }
+  
     var coord = {lat:14.104953 ,lng: -87.233900};
     var coord2 = ubiccacion2;
 
@@ -133,46 +148,42 @@ function cerrarModal(){
     modal.style.visibility = "hidden";
 }
 
-console.log(repartidor)
-
 function aceptarEnvio(id){
   console.log('estraga en tramite', id)
   
   const u = {
-      _id: entregas[id]._id,
-      empresa: entregas[id].empresa,
-      direccion: entregas[id].direccion,
-      distancia: entregas[id].distancia,
-      status: 1,
-      mapa: entregas[id].mapa,
-      precio: entregas[id].precio,
-      envios: entregas[id].envios,
-      color: entregas[id].color,
-      idRepartidor: repartidor._id,
-      nombreRepartidor: repartidor.name,
-      idCliente: entregas[id].idCliente,
-      nombreCliente: entregas[id].nombreCliente,
+    id: entregas[id].id,
+    status:  "Pending",
+    service: entregas[id].service,
+    total: entregas[id].total,
+    date: entregas[id].date,
+    payment: entregas[id].payment,
+    client: entregas[id].client,
+    dealer:  entregas[id].dealer,
+    products:  entregas[id].products,
+    locations: entregas[id].location
   }
 
   const a = {
-    status: 1,
-    nombreRepartidor: repartidor.name,
-    idRepartidor: repartidor._id 
+    status: "Pending",
+    id: repartidor._id,
+    name: repartidor.name,
+    email: repartidor.email,
+    tel: repartidor.phoneNumber
   }
 
   let idOrden = entregas[id]._id;
 
-  console.log(idOrden, repartidor._id, repartidor.name)
-
-    fetch(`http://localhost:3002/ordenes/${idOrden}`, {
+    fetch(`http://localhost:3000/client/order/${idOrden}`, {
         method: 'PUT',
-        headers: {"Content-Type": "application/json"},//j
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(a)
       })
     .then((respuesta) => respuesta.json())
     .then((datos) => {
         console.log('Se guardo correctamente', datos);
-        fetch(`http://localhost:3002/repartidores/${repartidor._id}`, {
+
+        fetch(`http://localhost:3000/dealers/pending/${repartidor._id}`, {
         method: 'PUT',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(u)
@@ -185,12 +196,13 @@ function aceptarEnvio(id){
             recargarReparrtidor();
         })
         .catch(error => console.log(error));  
+
     })
     .catch(error => console.log(error));      
 }
 
 function recargarReparrtidor(){
-  fetch(`http://localhost:3002/repartidores?email=${repartidor.email}&password=${repartidor.password}`, {
+  fetch(`http://localhost:3000/dealers?email=${repartidor.email}&password=${repartidor.password}`, {
         method: 'get',
         headers: {"Content-Type": "application/json"},
       })
