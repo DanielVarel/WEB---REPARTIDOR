@@ -4,28 +4,30 @@ let pendiente = usuarioRegistrados[0].pendiente[0];
 
 console.log(usuarioRegistrados[0]._id)
 
+console.log(pendiente)
+
 function mostrarPedio(pendiente) {
 
     let productos = "";
     
-        for(let i=0; i<pendiente.envios.length;  i++){
-          productos  += `<h4>${pendiente.envios[i].nombreProducto}<h4>
-                        <p>${pendiente.envios[i].descripcion}</p>`;
+        for(let i=0; i<pendiente.products.length;  i++){
+          productos  += `<h4>${pendiente.products[i].name}<h4>
+                          <div class="imagen-producto"><img src="${pendiente.products[i].imagen}"></div>
+                        <p>${pendiente.products[i].descripcion}</p>`;
       }
     
 
    
     document.getElementById("pedientes").innerHTML = `<h1>Delivery in process</h1>
-                                                      <h3>Coordenadas: ${pendiente.direccion}<h3>
+                                                      <h3>Order Id: ${pendiente.id}<h3>
                                                       <div id="map" style="width: 300px; margin:auto;" class="imagen-mapa"></div>
-                                                      <p>Distancia: ${pendiente.distancia}</p>
                                                       <p>${productos}</p>
                                                       <button class="entregado" onclick="pedidoEntregado()">Delivered</button>
                                                       `;
 }
 
 mostrarPedio(pendiente);
-var coord2 = pendiente.mapa[0];
+var coord2 = pendiente.locations[0];
 
 // para el mapa
 function iniciarMap(ubiccacion2){
@@ -68,30 +70,30 @@ function iniciarMap(ubiccacion2){
 function pedidoEntregado(){
 
   const u = {
-      _id: pendiente._id,
-      empresa: pendiente.empresa,
-      direccion: pendiente.direccion,
-      distancia: pendiente.distancia,
-      status: 2,
-      mapa: pendiente.mapa[0],
-      precio: pendiente.precio,
-      envios: pendiente.envios,
-      color: pendiente.color,
-      idRepartidor: usuarioRegistrados[0]._id,
-      nombreRepartidor: usuarioRegistrados[0].name,
-      idCliente: pendiente.idCliente,
-      nombreCliente: pendiente.nombreCliente,
+    id: pendiente.id,
+    status:  "Received",
+    service: pendiente.service,
+    total: pendiente.total,
+    date: pendiente.date,
+    payment: pendiente.payment,
+    client: pendiente.client,
+    dealer:  pendiente.dealer,
+    products:  pendiente.products,
+    locations: pendiente.locations
   }
 
   let idOrden = pendiente._id;
 
   const a = {
-    status: 2,
-    nombreRepartidor: usuarioRegistrados[0].name,
-    idRepartidor: usuarioRegistrados[0]._id 
+    status: "Received",
+    id: usuarioRegistrados[0]._id,
+    name: usuarioRegistrados[0].name,
+    email: usuarioRegistrados[0].email,
+    tel: usuarioRegistrados[0].phoneNumber
   }
 
-  fetch(`http://localhost:3002/ordenes/${idOrden}`, {
+
+  fetch(`http://localhost:3000/client/order/${idOrden}`, {
         method: 'PUT',
         headers: {"Content-Type": "application/json"},//j
         body: JSON.stringify(a)
@@ -99,7 +101,8 @@ function pedidoEntregado(){
     .then((respuesta) => respuesta.json())
     .then((datos) => {
         console.log('Se guardo correctamente', datos);
-        fetch(`http://localhost:3002/repartidores/${usuarioRegistrados[0]._id}/cambiar`, {
+
+        fetch(`http://localhost:3000/dealers/${usuarioRegistrados[0]._id}/change`, {
         method: 'PUT',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(u)
@@ -107,7 +110,8 @@ function pedidoEntregado(){
         .then((respuesta) => respuesta.json())
         .then((datos) => {
             console.log('Se guardo correctamente', datos);
-            fetch(`http://localhost:3002/repartidores/${usuarioRegistrados[0]._id}/eliminar`, {
+
+            fetch(`http://localhost:3000/dealers/${usuarioRegistrados[0]._id}/eliminate`, {
               method: 'PUT',
               headers: {"Content-Type": "application/json"},
               body: JSON.stringify(u)
@@ -118,15 +122,17 @@ function pedidoEntregado(){
                   recargarReparrtidor();
               })
               .catch(error => console.log(error));
+
              })
         .catch(error => console.log(error));   
+
     })
     .catch(error => console.log(error)); 
 }
 
 
 function recargarReparrtidor(){
-  fetch(`http://localhost:3002/repartidores?email=${usuarioRegistrados[0].email}&password=${usuarioRegistrados[0].password}`, {
+  fetch(`http://localhost:3000/dealers?email=${usuarioRegistrados[0].email}&password=${usuarioRegistrados[0].password}`, {
         method: 'get',
         headers: {"Content-Type": "application/json"},
       })

@@ -35,8 +35,8 @@ function mostrarEntrega(){
     for(let i=0; i<entregas.length; i++){
             document.getElementById("lista").innerHTML += `<div class="contenedor abrir-modal" onclick="abrirModal();detallesEnvio(${i})"  style="background-color: ${colores[i]}">
                                                                 <h2 class="empresa">${i+1}</h2>
-                                                                <p class="direccion">revenue: ${entregas[i].service}</p>
-                                                                <p class="cantidad-envios">Cantidad de productos: ${entregas[i].products.length}</p>
+                                                                <p class="direccion">Revenue: ${entregas[i].service}</p>
+                                                                <p class="cantidad-envios">Quantity of products: ${entregas[i].products.length}</p>
                                                             </div>`;    
     }
 
@@ -153,6 +153,7 @@ function aceptarEnvio(id){
   
   const u = {
     id: entregas[id].id,
+    _id: entregas[id]._id,
     status:  "Pending",
     service: entregas[id].service,
     total: entregas[id].total,
@@ -161,7 +162,7 @@ function aceptarEnvio(id){
     client: entregas[id].client,
     dealer:  entregas[id].dealer,
     products:  entregas[id].products,
-    locations: entregas[id].location
+    locations: entregas[id].locations
   }
 
   const a = {
