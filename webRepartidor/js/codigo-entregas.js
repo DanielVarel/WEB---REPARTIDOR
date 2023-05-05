@@ -13,7 +13,7 @@ var entregas = []
 var repartidorActual = 0;
 
 function obtenerOrdenes(){
-  fetch(`http://localhost:3000/client/order`, {
+  fetch(`https://backend-jahxr.vercel.app/client/order`, {
     method: 'GET',
     headers: {
       "Content-Type": "application/json",
@@ -175,7 +175,7 @@ function aceptarEnvio(id){
 
   let idOrden = entregas[id]._id;
 
-    fetch(`http://localhost:3000/client/order/${idOrden}`, {
+    fetch(`https://backend-jahxr.vercel.app/client/order/${idOrden}`, {
         method: 'PUT',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(a)
@@ -184,7 +184,7 @@ function aceptarEnvio(id){
     .then((datos) => {
         console.log('Se guardo correctamente', datos);
 
-        fetch(`http://localhost:3000/dealers/pending/${repartidor._id}`, {
+        fetch(`https://backend-jahxr.vercel.app/dealers/pending/${repartidor._id}`, {
         method: 'PUT',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(u)
@@ -203,7 +203,7 @@ function aceptarEnvio(id){
 }
 
 function recargarReparrtidor(){
-  fetch(`http://localhost:3000/dealers?email=${repartidor.email}&password=${repartidor.password}`, {
+  fetch(`https://backend-jahxr.vercel.app/dealers?email=${repartidor.email}&password=${repartidor.password}`, {
         method: 'get',
         headers: {"Content-Type": "application/json"},
       })

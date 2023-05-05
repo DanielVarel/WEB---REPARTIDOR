@@ -93,7 +93,7 @@ function pedidoEntregado(){
   }
 
 
-  fetch(`http://localhost:3000/client/order/${idOrden}`, {
+  fetch(`https://backend-jahxr.vercel.app/client/order/${idOrden}`, {
         method: 'PUT',
         headers: {"Content-Type": "application/json"},//j
         body: JSON.stringify(a)
@@ -102,7 +102,7 @@ function pedidoEntregado(){
     .then((datos) => {
         console.log('Se guardo correctamente', datos);
 
-        fetch(`http://localhost:3000/dealers/${usuarioRegistrados[0]._id}/change`, {
+        fetch(`https://backend-jahxr.vercel.app/dealers/${usuarioRegistrados[0]._id}/change`, {
         method: 'PUT',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(u)
@@ -111,7 +111,7 @@ function pedidoEntregado(){
         .then((datos) => {
             console.log('Se guardo correctamente', datos);
 
-            fetch(`http://localhost:3000/dealers/${usuarioRegistrados[0]._id}/eliminate`, {
+            fetch(`https://backend-jahxr.vercel.app/dealers/${usuarioRegistrados[0]._id}/eliminate`, {
               method: 'PUT',
               headers: {"Content-Type": "application/json"},
               body: JSON.stringify(u)
@@ -132,7 +132,7 @@ function pedidoEntregado(){
 
 
 function recargarReparrtidor(){
-  fetch(`http://localhost:3000/dealers?email=${usuarioRegistrados[0].email}&password=${usuarioRegistrados[0].password}`, {
+  fetch(`https://backend-jahxr.vercel.app/dealers?email=${usuarioRegistrados[0].email}&password=${usuarioRegistrados[0].password}`, {
         method: 'get',
         headers: {"Content-Type": "application/json"},
       })

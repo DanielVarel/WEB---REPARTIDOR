@@ -66,7 +66,7 @@ form.addEventListener("submit", e=>{
         }
 
 
-        fetch('http://localhost:3000/dealers', {
+        fetch('https://backend-jahxr.vercel.app/dealers', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(repartidor)

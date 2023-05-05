@@ -14,7 +14,7 @@ form.addEventListener("submit", e=>{
     let email = document.getElementById('email').value;
     let password = document.getElementById('password').value;
 
-    fetch(`http://localhost:3000/dealers?email=${email}&password=${password}`, {
+    fetch(`https://backend-jahxr.vercel.app/dealers?email=${email}&password=${password}`, {
         method: 'get',
         headers: {"Content-Type": "application/json"},
       })
